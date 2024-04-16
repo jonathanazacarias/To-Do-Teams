@@ -14,7 +14,7 @@ export default function NavBar(props) {
             </>}
             {loggedIn && <>
                 <Link to={'lists'}>My Lists</Link>
-                <Link to={'friends'}>Collaborators</Link>
+                <Link to={'friends'}>Friends</Link>
                 <button>Log out</button>
             </>}
             

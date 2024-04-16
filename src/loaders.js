@@ -15,6 +15,11 @@ export async function singleListLoader({params}) {
   return list;
 }
 
+export async function friendsLoader() {
+  const friends = await getFriends();
+  return friends;
+}
+
 function getSingleList(id) {
   let parsedId = parseInt(id);
   let list = getLists().filter(list => list.id === parsedId);
@@ -46,7 +51,7 @@ function getLists() {
           description: "Take the dog outside for a walk",
         },
       ],
-      owner: "jon" /*{ userId: "123456", userName: "jon", avatar: "" }*/,
+      owner: { userId: "123456", userName: "jon", avatar: "" },
       contributers: [],
       created: "2024-04-14T14:30:15.449Z",
       modified: "2024-04-14T14:38:15.449Z",
@@ -73,7 +78,7 @@ function getLists() {
           description: "Take the cat outside for a walk",
         },
       ],
-      owner: "jon" /*{ userId: "123456", userName: "jon", avatar: "" }*/,
+      owner: { userId: "123456", userName: "jon", avatar: "" },
       contributers: [{ userId: "654321", userName: "car", avatar: "" }],
       created: "2024-04-14T14:30:15.449Z",
       modified: "2024-04-14T14:38:15.449Z",
@@ -82,4 +87,27 @@ function getLists() {
   ];
 
   return listsList;
+}
+
+
+function getFriends() {
+  const friends = [
+    {
+      userId: "654321",
+      fName: "",
+      lName: "",
+      userName: "Car",
+      avatar: "",
+      sharedLists: [2 /* this is a list id*/],
+    },
+    {
+      userId: "362514",
+      fName: "",
+      lName: "",
+      userName: "Dom",
+      avatar: "",
+      sharedLists: [1 /* this is a list id*/],
+    },
+  ];
+  return friends;
 }

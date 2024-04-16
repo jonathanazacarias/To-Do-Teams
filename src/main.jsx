@@ -5,7 +5,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Root from './routes/Root'
 import ErrorPage from './error-page'
 import Login from './routes/Login'
-import { listLoader, singleListLoader } from './loaders'
+import { friendsLoader, listLoader, singleListLoader } from './loaders'
 import { loginAction } from './actions'
 import Home from './routes/Home'
 import Lists from './routes/Lists'
@@ -37,7 +37,8 @@ const router = createBrowserRouter([
       },
       {
         path: 'friends',
-        element: <Friends />
+        element: <Friends />,
+        loader: friendsLoader,
       },
       {
         path: 'lists/:listId',

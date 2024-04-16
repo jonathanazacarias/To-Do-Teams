@@ -3,15 +3,18 @@ import InputDisplay from './InputDisplay';
 
 export default function ToDoItem(props) {
     const {id, title, description, updateItem} = props;
-    function handleChange() {
-        updateItem({id: id, title: title, description: description});
+    function handleTitleChange(val) {
+        updateItem({id: id, title: val, description: description});
+    }
+    function handleDescriptionChange(val) {
+        updateItem({ id: id, title: title, description: val });
     }
     return (
 
         <div>
             <li>
-                <InputDisplay inputType='input' initialValue={title} placeHolder='Title' saveMethod={handleChange} />
-                <InputDisplay inputType='textArea' initialValue={description} placeHolder='Description' saveMethod={handleChange} />
+                <InputDisplay inputType='input' initialValue={title} placeHolder='Title' saveMethod={handleTitleChange} />
+                <InputDisplay inputType='textArea' initialValue={description} placeHolder='Description' saveMethod={handleDescriptionChange} />
             </li>
         </div>
 

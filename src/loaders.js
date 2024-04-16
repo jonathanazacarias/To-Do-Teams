@@ -21,6 +21,7 @@ function getSingleList(id) {
   return list[0];
 }
 
+// place holder data
 function getLists() {
 
   const listsList = [

@@ -23,12 +23,18 @@ export default function List(props) {
         // also need to do db save here
     }
 
-    // function updateItem(id) {
-    //     setToDoItems(prevItems => {
-    //         let updateItem = prevItems.find(item => item.id == id);
+    function updateItem(item) {
+        const id = item.id;
+        setToDoItems(prevItems => {
+            let updateItem = prevItems.find(item => item.id == id);
+            let updateItemIndex = prevItems.findIndex(item => item.id == id);
+            let beginningOfList = prevItems.slice(0,updateItemIndex);
+            let endOfList = prevItems.slice(updateItemIndex+1);
+            let updatedItem = {id:updateItem.id, title:updateItem.title, description:updateItem.description};
+            return [...beginningOfList, updatedItem, ...endOfList];
 
-    //     })
-    // }
+        })
+    }
 
     function deleteItem(id) {
         setToDoItems(prevItems => {
@@ -54,7 +60,7 @@ export default function List(props) {
                             title={mappedTodoItem.title}
                             description={mappedTodoItem.description}
                             onChecked={deleteItem}
-                            // updateItem={updateItem}
+                            updateItem={updateItem}
                         />
                     ))}
                 </ul>

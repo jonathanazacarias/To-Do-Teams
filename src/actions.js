@@ -20,3 +20,10 @@ export async function newListAction({ request /*params*/ }) {
     listsList.push(newList);
     return redirect("/home/lists/" + newList.id);
 }
+
+export async function updateListAction({ request /*params*/ }) {
+  const updatedList = await request.json();
+  let index = listsList.findIndex( list => list.id === updatedList.id);
+  listsList.splice(index, 1, updatedList);
+  return null;
+}

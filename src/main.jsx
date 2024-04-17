@@ -6,7 +6,7 @@ import Root from './routes/Root'
 import ErrorPage from './error-page'
 import Login from './routes/Login'
 import { friendsLoader, listLoader, singleListLoader } from './loaders'
-import { loginAction, newListAction } from './actions'
+import { loginAction, newListAction, updateListAction } from './actions'
 import Home from './routes/Home'
 import Lists from './routes/Lists'
 import Friends from './routes/Friends'
@@ -45,6 +45,7 @@ const router = createBrowserRouter([
         path: 'lists/:listId',
         element: <ListPage />,
         loader: singleListLoader,
+        action: updateListAction,
       },
     ]
   }

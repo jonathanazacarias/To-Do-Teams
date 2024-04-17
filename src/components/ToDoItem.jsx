@@ -23,7 +23,7 @@ export default function ToDoItem(props) {
 
 ToDoItem.propTypes = {
     updateItem: PropTypes.func.isRequired,
-    id: PropTypes.number.isRequired,
+    id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
 }

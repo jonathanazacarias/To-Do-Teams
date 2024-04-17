@@ -3,37 +3,94 @@ import ToDoItem from './ToDoItem'
 import InputArea from './InputArea'
 import {PropTypes} from 'prop-types'
 import InputDisplay from './InputDisplay'
+import { useSubmit } from 'react-router-dom'
+import { nanoid } from 'nanoid'
 
 export default function List(props) {
-    const title = props.toDoList.title;
-    const items = props.toDoList.items;
+    const { id, title, description, items, owner, contributers, created } = props.toDoList;
+    
+
+    const submit = useSubmit();
+    function updateServer(updateContent) {
+        let newTitle = listTitle;
+        let newItems = toDoItems;
+        let currentTime = new Date().toISOString;
+
+        // check what content in the list is being updated
+        // if the updated content is a edited list item
+        if(updateContent.newItemList) {
+            newItems = updateContent.newItemList;
+        }
+        // if the updated content is the list title
+        if(updateContent.newListTitle) {
+            newTitle = updateContent.newListTitle;
+        }
+
+        // if the updated content is a new list item
+        if(updateContent.newListItem) {
+            newItems = [...newItems, updateContent.newListItem];
+            
+        }
+
+        let updatedList = {
+            id: id,
+            title: newTitle,
+            description: description,
+            items: newItems,
+            owner: owner,
+            contributers: contributers,
+            created: created,
+            modified: currentTime,
+            modifiedBy: owner,
+        };
+        submit(JSON.stringify(updatedList), { method: 'post', encType: "application/json" });
+    }
 
     const [listTitle, setListTitle] = useState(title);
     function changeTitle(inputTitle) {
+        
         setListTitle(inputTitle);
-        // also need to do db save here
+        // save to db
+        updateServer({newListTitle: inputTitle});
     }
 
     const [toDoItems, setToDoItems] = useState(items);
+
     function addItem(inputText) {
         setToDoItems(prevItems => {
-            let newId = prevItems.length+1;
-            return [...prevItems, {id: newId, title: inputText.title, description: inputText.description}];
+            let newId = nanoid();
+
+            let newItem = { id: newId, title: inputText.title, description: inputText.description }
+
+            // save to db
+            updateServer({newListItem: newItem});
+            
+            return [...prevItems, newItem];
         });
-        // also need to do db save here
+        
     }
 
     function updateItem(item) {
+        // id of the item to be updated so we can find it in the list
         const id = item.id;
+        
         setToDoItems(prevItems => {
-            let updateItem = prevItems.find(item => item.id == id);
-            let updateItemIndex = prevItems.findIndex(item => item.id == id);
-            let beginningOfList = prevItems.slice(0,updateItemIndex);
-            let endOfList = prevItems.slice(updateItemIndex+1);
-            let updatedItem = {id:updateItem.id, title:updateItem.title, description:updateItem.description};
-            return [...beginningOfList, updatedItem, ...endOfList];
+            // find the list item to update
+            let updateItemIndex = prevItems.findIndex(item => item.id === id);
 
-        })
+            // get the list items that are before the list item that is being updated
+            let beginningOfList = prevItems.slice(0,updateItemIndex);
+
+            // get the list items that are after the list item that is being updated
+            let endOfList = prevItems.slice(updateItemIndex+1);
+            
+            // insert the items at front, new list, and items at back to a new list of items
+            let newList = [...beginningOfList, item, ...endOfList];
+            
+            updateServer({newItemList: newList})
+
+            return newList;
+        });
     }
 
     function deleteItem(id) {

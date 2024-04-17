@@ -9,7 +9,8 @@ export default function Friends() {
         <div>
             <h1>My Friends</h1>
             {friends.map((friend) => {
-                return <UserCard key={friend.id} id={friend.id} userName={friend.userName} avatar={friend.avatar}/>;
+                
+                return <UserCard key={friend.userId} id={friend.userId} userName={friend.userName} avatar={friend.avatar}/>;
             })}
         </div>
     );

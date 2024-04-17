@@ -5,12 +5,13 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Root from './routes/Root'
 import ErrorPage from './error-page'
 import Login from './routes/Login'
-import { friendsLoader, listLoader, singleListLoader } from './loaders'
+import { friendsLoader, listLoader, singleListLoader, singleUserLoader } from './loaders'
 import { loginAction, newListAction, updateListAction } from './actions'
 import Home from './routes/Home'
 import Lists from './routes/Lists'
 import Friends from './routes/Friends'
 import ListPage from './routes/ListPage'
+import FriendPage from './routes/FriendPage'
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,11 @@ const router = createBrowserRouter([
         element: <ListPage />,
         loader: singleListLoader,
         action: updateListAction,
+      },
+      {
+        path: 'friends/:userId',
+        element: <FriendPage />,
+        loader: singleUserLoader,
       },
     ]
   }

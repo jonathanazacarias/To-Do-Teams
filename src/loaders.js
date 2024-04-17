@@ -21,9 +21,18 @@ export async function friendsLoader() {
   return await friends;
 }
 
+export async function singleUserLoader({params}) {
+  const friend = await getSingleFriend(params.userId);
+  return friend;
+}
+
 function getSingleList(id) {
   let list = listsList.filter(list => list.id === id);
   return list[0];
+}
+
+function getSingleFriend(id) {
+  return friends.find(friend => friend.userId === id);
 }
 
 

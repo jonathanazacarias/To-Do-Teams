@@ -1,10 +1,11 @@
 import { redirect } from "react-router-dom";
 
+import {listsList} from './FAKEBACKEND'
+
 export async function loginAction({ request, /*params*/ }) {
   const formData = await request.formData();
-  //the body of the form is available under formDate.get(nameOfInputField)
+  //the body of the form is available under formData.get(nameOfInputField)
   //http method available under request.method
-  console.log(formData.get("email"), request.method, '\n'+request.referrer);
   if(formData.get('passwordValidation')){
     console.log(formData.get("passwordValidation"));
   }
@@ -12,4 +13,10 @@ export async function loginAction({ request, /*params*/ }) {
 
   // once we get a response we can tell our react app to redirect to another page
   return redirect("/home/lists");
+}
+
+export async function newListAction({ request /*params*/ }) {
+    const newList = await request.json();
+    listsList.push(newList);
+    return redirect("/home/lists/" + newList.id);
 }

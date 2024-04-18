@@ -6,13 +6,19 @@ export async function loginAction({ request, /*params*/ }) {
   const formData = await request.formData();
   //the body of the form is available under formData.get(nameOfInputField)
   //http method available under request.method
+
+  // if there is password validating then they are creating an account, otherwise login
   if(formData.get('passwordValidation')){
     console.log(formData.get("passwordValidation"));
   }
   //here is where we would make the post request to our backend
-
-  // once we get a response we can tell our react app to redirect to another page
-  return redirect("/home/lists");
+  if (formData.get("password")==1) {
+    return redirect('/home/lists');
+  } else {
+    return true;
+  }
+    // once we get a response we can tell our react app to redirect to another page
+    
 }
 
 export async function newListAction({ request /*params*/ }) {

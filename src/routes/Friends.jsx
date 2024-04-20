@@ -1,5 +1,6 @@
 
 import UserCard from '../components/UserCard';
+import NavBar from '../components/nav/NavBar';
 import { useLoaderData } from 'react-router-dom';
 
 export default function Friends() {
@@ -7,6 +8,7 @@ export default function Friends() {
 
     return (
         <div>
+            <NavBar loggedIn={true} />
             <h1>My Friends</h1>
             {friends.map((friend) => {
                 

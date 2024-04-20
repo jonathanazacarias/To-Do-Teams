@@ -1,5 +1,6 @@
 import { Form, useActionData/*redirect*/ } from 'react-router-dom'
 import { useState } from 'react'
+import NavBar from '../components/nav/NavBar';
 
 
 export default function Login() {
@@ -32,8 +33,9 @@ export default function Login() {
 
     return (
         <div>
+            <NavBar loggedIn={false} />
             <h1>{createAccount ? createWords.header : loginWords.header}</h1>
-            <Form method='post' action='' name={createAccount ? createWords.formName : loginWords.formName}>
+            <Form method='post'>
                 <input type='text' name='email' placeholder='email' />
                 <input type='password' name='password' placeholder='password' />
                 {createAccount && <input type='password' name='passwordValidation' placeholder='type password again' />}

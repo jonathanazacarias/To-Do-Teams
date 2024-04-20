@@ -2,7 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import Root from './routes/Root'
 import ErrorPage from './error-page'
 import Login from './routes/Login'
 import { friendsLoader, listLoader, singleListLoader, singleUserLoader } from './loaders'
@@ -12,23 +11,21 @@ import Lists from './routes/Lists'
 import Friends from './routes/Friends'
 import ListPage from './routes/ListPage'
 import FriendPage from './routes/FriendPage'
+import ProtectedRoute from './routes/ProtectedRoute'
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Root />,
+    element: <Home />,
     errorElement: <ErrorPage />,
-    children: [
-      {
-        path:'login',
-        element: <Login />,
-        action: loginAction,
-      }
-    ]
   },
   {
-    path: 'home',
-    element: <Home />,
+    path: 'login',
+    element: <Login />,
+    action: loginAction,
+  },
+  {
+    element: <ProtectedRoute />,
     errorElement: <ErrorPage />,
     children: [
       {

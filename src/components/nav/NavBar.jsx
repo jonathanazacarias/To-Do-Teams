@@ -10,7 +10,8 @@ export default function NavBar(props) {
         <nav>
             <NavLink to={loggedIn ? '../lists': '/'}><Logo className='logo' /></NavLink>
             {!loggedIn && <>
-                <NavLink to={'login'}>Log In</NavLink>
+                <NavLink to={'../login'}>Log In</NavLink>
+                <NavLink to={'../register'}>Register</NavLink>
             </>}
             {loggedIn && <>
                 <NavLink to={'../lists'}>My Lists</NavLink>

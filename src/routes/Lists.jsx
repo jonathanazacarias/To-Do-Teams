@@ -1,5 +1,6 @@
 
 import ListCard from '../components/ListCard';
+import NavBar from '../components/nav/NavBar';
 import { useLoaderData, useSubmit, } from 'react-router-dom';
 import { nanoid } from 'nanoid'
 
@@ -27,6 +28,7 @@ export default function Lists() {
 
     return (
         <div>
+            <NavBar loggedIn={true} />
             <h1>My Lists</h1>
             <button onClick={createNewList}>New List</button>
             {toDoLists.map((list) => {

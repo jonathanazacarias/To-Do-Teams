@@ -1,13 +1,13 @@
 import NavBar from "../components/nav/NavBar"
-import { Outlet, } from 'react-router-dom'
 
 export default function Home() {
     return (
         <>
-            <NavBar loggedIn={true} />
+            <NavBar loggedIn={false} />
 
             <div id="detail">
-                <Outlet />
+                <h1>This is the home page</h1>
+                <p>Advertising benifits of To-Do Teams</p>
             </div>
         </>
     )

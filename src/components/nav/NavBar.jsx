@@ -1,5 +1,5 @@
 import './navbar.css'
-import { Link, } from "react-router-dom";
+import { NavLink, } from "react-router-dom";
 import Logo from "../Logo";
 import PropTypes from "prop-types";
 
@@ -8,13 +8,13 @@ export default function NavBar(props) {
     
     return (
         <nav>
-            <Link to={loggedIn ? 'lists': '/'}><Logo className='logo' /></Link>
+            <NavLink to={loggedIn ? '../lists': '/'}><Logo className='logo' /></NavLink>
             {!loggedIn && <>
-                <Link to={'login'}>Log In</Link>
+                <NavLink to={'login'}>Log In</NavLink>
             </>}
             {loggedIn && <>
-                <Link to={'lists'}>My Lists</Link>
-                <Link to={'friends'}>Friends</Link>
+                <NavLink to={'../lists'}>My Lists</NavLink>
+                <NavLink to={'../friends'}>Friends</NavLink>
                 <button>Log out</button>
             </>}
             

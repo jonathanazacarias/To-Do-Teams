@@ -1,29 +1,64 @@
 import { redirect } from "react-router-dom";
+import axios from "axios";
+import { listsList } from "./FAKEBACKEND";
 
-import {listsList} from './FAKEBACKEND'
+const toDoAPIBaseURL = "http://localhost:3000";
 
-export async function loginAction({ request, /*params*/ }) {
+export async function loginAction({ request /*params*/ }) {
   const formData = await request.formData();
-  //the body of the form is available under formData.get(nameOfInputField)
-  //http method available under request.method
-  if(formData.get('passwordValidation')){
-    console.log(formData.get("passwordValidation"));
-  }
-  //here is where we would make the post request to our backend
+  const email = formData.get("email");
+  const password = formData.get("password");
+  const user = JSON.stringify({ username: email, password: password });
+  const headers = { "Content-Type": "application/json" };
 
-  // once we get a response we can tell our react app to redirect to another page
-  return redirect("/home/lists");
+  // if there is password validating then they are creating an account, otherwise login
+  if (formData.get("passwordValidation")) {
+    // check that what user typed in for password equals what they typed in for password validation
+    if (password === formData.get("passwordValidation")) {
+      try {
+        const response = await axios.post(`${toDoAPIBaseURL}/register`, user, {
+          headers: headers,
+        });
+        const res = response.data;
+        console.log(res);
+      } catch (error) {
+        console.log(`error:` + error);
+      }
+    } else {
+      return true;
+    }
+  } else {
+    // they are making a login request
+
+    try {
+      const response = await axios.post(`${toDoAPIBaseURL}/login`, user, {
+        headers: headers,
+      });
+      const res = response.data;
+
+      console.log(res);
+      if (res) {
+        return redirect("../lists");
+      } else {
+        return true;
+      }
+    } catch (error) {
+      console.log(`error:` + error);
+    }
+  }
+
+  return true;
 }
 
 export async function newListAction({ request /*params*/ }) {
-    const newList = await request.json();
-    listsList.push(newList);
-    return redirect("/home/lists/" + newList.id);
+  const newList = await request.json();
+  listsList.push(newList);
+  return redirect("/home/lists/" + newList.id);
 }
 
 export async function updateListAction({ request /*params*/ }) {
   const updatedList = await request.json();
-  let index = listsList.findIndex( list => list.id === updatedList.id);
+  let index = listsList.findIndex((list) => list.id === updatedList.id);
   listsList.splice(index, 1, updatedList);
   return null;
 }

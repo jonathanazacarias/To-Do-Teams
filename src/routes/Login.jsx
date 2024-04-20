@@ -1,15 +1,16 @@
-import { Form, useActionData/*redirect*/ } from 'react-router-dom'
 import { useState } from 'react'
+import { Form, useActionData, Link } from 'react-router-dom'
 import NavBar from '../components/nav/NavBar';
 
 
 export default function Login() {
+    const [showPassword, toggleShowPassword] = useState(false);
+
     const invalidLogin = useActionData();
     if(invalidLogin) {
         console.log(`Do something to indicate incorrect login`);
     }
 
-    const [createAccount, setCreateAccount] = useState(false);
     let loginWords = {
         header: 'Login',
         formName: 'login',
@@ -18,33 +19,28 @@ export default function Login() {
         switchActionButton: 'Create Account',
         oauthTitle: 'Or login with:'
     }
-    let createWords = {
-        header: 'Create Account',
-        formName: 'create',
-        formButton: 'Create Account',
-        switchActionTitle: 'Already have an account?',
-        switchActionButton: 'Login',
-        oauthTitle: 'Or create account with:'
-    }
 
-    function handleChangeIntent() {
-        setCreateAccount(!createAccount);
+    function handleShowPassword(event) {
+        event.preventDefault();
+        toggleShowPassword(!showPassword);
     }
-
+    
     return (
         <div>
             <NavBar loggedIn={false} />
-            <h1>{createAccount ? createWords.header : loginWords.header}</h1>
+            <h1>{loginWords.header}</h1>
             <Form method='post'>
-                <input type='text' name='email' placeholder='email' />
-                <input type='password' name='password' placeholder='password' />
-                {createAccount && <input type='password' name='passwordValidation' placeholder='type password again' />}
-                <button type ='submit'>{createAccount ? createWords.formButton : loginWords.formButton}</button>
+                <label htmlFor='email'>Email</label>
+                <input type='text' name='email' placeholder='email' autoComplete='email'/>
+                <label htmlFor='password'>Password</label>
+                <input type={showPassword ? 'text' : 'password'} name='password' placeholder='password' autoComplete='current-password' />
+                <button onClick={handleShowPassword} >{showPassword ? 'Hide' : 'Show'}</button>
+                <button type ='submit'>{loginWords.formButton}</button>
             </Form >
-            <h3>{createAccount ? createWords.switchActionTitle : loginWords.switchActionTitle}</h3>
-            <button onClick={handleChangeIntent}>{createAccount ? createWords.switchActionButton : loginWords.switchActionButton}</button>
+            <h3>{loginWords.switchActionTitle}</h3>
+            <Link to={"../register"}>{loginWords.switchActionButton}</Link>
             <hr />
-            <h2>{createAccount ? createWords.oauthTitle : loginWords.oauthTitle}</h2>
+            <h2>{loginWords.oauthTitle}</h2>
             <button>Google</button>
             <button>Facebook</button>
         </div>

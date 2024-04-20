@@ -4,6 +4,35 @@ import { listsList } from "./FAKEBACKEND";
 
 const toDoAPIBaseURL = "http://localhost:3000";
 
+export async function registerAction({ request /*params*/ }) {
+  // get the data passed in by the registration form
+  const formData = await request.formData();
+  const email = formData.get("email");
+  const username = formData.get("username");
+  const password = formData.get("password");
+  const passwordValidation = formData.get("passwordValidation");
+
+  // create the info to be passed to the server
+  const user = JSON.stringify({ email: email, username: username, password: password });
+  const headers = { "Content-Type": "application/json" };
+  
+  // check that what user typed in for password equals what they typed in for password validation
+  if (password === passwordValidation) {
+    try {
+      const response = await axios.post(`${toDoAPIBaseURL}/register`, user, {
+        headers: headers,
+      });
+      const res = response.data;
+      console.log(res);
+      return true;
+    } catch (error) {
+      console.log(`error:` + error);
+    }
+  } else {
+    return true;
+  }
+}
+
 export async function loginAction({ request /*params*/ }) {
   const formData = await request.formData();
   const email = formData.get("email");
@@ -11,40 +40,20 @@ export async function loginAction({ request /*params*/ }) {
   const user = JSON.stringify({ username: email, password: password });
   const headers = { "Content-Type": "application/json" };
 
-  // if there is password validating then they are creating an account, otherwise login
-  if (formData.get("passwordValidation")) {
-    // check that what user typed in for password equals what they typed in for password validation
-    if (password === formData.get("passwordValidation")) {
-      try {
-        const response = await axios.post(`${toDoAPIBaseURL}/register`, user, {
-          headers: headers,
-        });
-        const res = response.data;
-        console.log(res);
-      } catch (error) {
-        console.log(`error:` + error);
-      }
+  try {
+    const response = await axios.post(`${toDoAPIBaseURL}/login`, user, {
+      headers: headers,
+    });
+    const res = response.data;
+
+    console.log(res);
+    if (res) {
+      return redirect("../lists");
     } else {
       return true;
     }
-  } else {
-    // they are making a login request
-
-    try {
-      const response = await axios.post(`${toDoAPIBaseURL}/login`, user, {
-        headers: headers,
-      });
-      const res = response.data;
-
-      console.log(res);
-      if (res) {
-        return redirect("../lists");
-      } else {
-        return true;
-      }
-    } catch (error) {
-      console.log(`error:` + error);
-    }
+  } catch (error) {
+    console.log(`error:` + error);
   }
 
   return true;

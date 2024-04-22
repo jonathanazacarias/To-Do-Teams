@@ -13,6 +13,10 @@ import ListPage from './routes/ListPage'
 import FriendPage from './routes/FriendPage'
 import ProtectedRoute from './routes/ProtectedRoute'
 import Register from './routes/Register'
+import Root from './components/Root'
+
+
+
 
 const router = createBrowserRouter([
   {
@@ -62,6 +66,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router = {router} />
+    <Root>
+      <RouterProvider router={router} />
+    </Root>
   </React.StrictMode>,
 )

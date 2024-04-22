@@ -21,6 +21,7 @@ export async function registerAction({ request /*params*/ }) {
     try {
       const response = await axios.post(`${toDoAPIBaseURL}/register`, user, {
         headers: headers,
+        withCredentials: true,
       });
       const res = response.data;
       console.log(res);
@@ -43,6 +44,7 @@ export async function loginAction({ request /*params*/ }) {
   try {
     const response = await axios.post(`${toDoAPIBaseURL}/login`, user, {
       headers: headers,
+      withCredentials: true,
     });
     const res = response.data;
 

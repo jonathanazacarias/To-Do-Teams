@@ -1,23 +1,23 @@
+import { redirect } from 'react-router-dom';
 import {listsList, friends} from './FAKEBACKEND'
 import axios from "axios";
 
 const toDoAPIBaseURL = "http://localhost:3000";
 
-// we can put all of our backend api calls here and load all the data
-// we need into our components via loaders for those routes/ components
-
-// we can create different loader functions that make different api calls for data
-// we will do this same idea for posts, but in the actions.js file
-
 export async function listLoader() {
   
-  // in app this will be an axios call to the backend
+  try {
+    const data = await axios.get(`${toDoAPIBaseURL}/lists`, {
+      withCredentials: true,
+    });
+    
+    return data.data;
+    
+  } catch (error) {
+    return redirect("/login");
+  }
 
-  const data = await axios.get(`${toDoAPIBaseURL}/lists`, {
-    withCredentials: true,
-  });
   
-  return data.data;
 }
 
 export async function singleListLoader({params}) {

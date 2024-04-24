@@ -1,17 +1,7 @@
-import {createContext, useState} from 'react';
-import PropTypes from "prop-types"; 
+import { useState, } from 'react';
+import { Outlet } from 'react-router-dom';
 
-const UserContext = createContext(null);
-
-export default function Root({children}) {
+export default function Root() {
     const [user, setUser] = useState(null);
-    return (
-        <UserContext.Provider value = {{user, setUser}}>
-            {children}
-        </UserContext.Provider>
-    )
-}
-
-Root.propTypes = {
-    children: PropTypes.func,
+    return <Outlet context={{user, setUser}} />;
 }

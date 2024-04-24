@@ -2,6 +2,7 @@ import { redirect } from "react-router-dom";
 import axios from "axios";
 import { listsList } from "./FAKEBACKEND";
 
+
 const toDoAPIBaseURL = "http://localhost:3000";
 
 export async function registerAction({ request /*params*/ }) {
@@ -13,9 +14,13 @@ export async function registerAction({ request /*params*/ }) {
   const passwordValidation = formData.get("passwordValidation");
 
   // create the info to be passed to the server
-  const user = JSON.stringify({ email: email, username: username, password: password });
+  const user = JSON.stringify({
+    email: email,
+    username: username,
+    password: password,
+  });
   const headers = { "Content-Type": "application/json" };
-  
+
   // check that what user typed in for password equals what they typed in for password validation
   if (password === passwordValidation) {
     try {
@@ -35,30 +40,32 @@ export async function registerAction({ request /*params*/ }) {
 }
 
 export async function loginAction({ request /*params*/ }) {
+  // get the data put in by user from the form and set data to json
   const formData = await request.formData();
   const email = formData.get("email");
   const password = formData.get("password");
-  const user = JSON.stringify({ username: email, password: password });
+  const loginUser = JSON.stringify({ username: email, password: password });
+
+  // create headers that will go with the request
   const headers = { "Content-Type": "application/json" };
 
+  
+
   try {
-    const response = await axios.post(`${toDoAPIBaseURL}/login`, user, {
+    
+    const response = await axios.post(`${toDoAPIBaseURL}/login`, loginUser, {
       headers: headers,
       withCredentials: true,
     });
-    const res = response.data;
 
-    console.log(res);
-    if (res) {
-      return redirect("../lists");
-    } else {
-      return true;
-    }
+    const user = response.data;
+    return user;
+
   } catch (error) {
-    console.log(`error:` + error);
-  }
+    
+    return {error: error};
 
-  return true;
+  }
 }
 
 export async function newListAction({ request /*params*/ }) {

@@ -1,15 +1,36 @@
-import { useState } from 'react'
-import { Form, useActionData, Link } from 'react-router-dom'
+import { useEffect, useState,} from 'react'
+import { Form, useActionData, Link, useNavigate, } from 'react-router-dom'
 import NavBar from '../components/nav/NavBar';
+import { useAuth } from '../utils/contexts';
+
 
 
 export default function Login() {
+    const auth = useAuth();
+
+
     const [showPassword, toggleShowPassword] = useState(false);
 
-    const invalidLogin = useActionData();
-    if(invalidLogin) {
-        console.log(`Do something to indicate incorrect login`);
-    }
+    const navigate = useNavigate();
+
+    const loginData = useActionData();
+
+    
+
+    useEffect(() => {
+        console.log(loginData);
+        if (loginData) {
+            
+            if (loginData.error) {
+                console.log("do something to indicate incorrect login.");
+            } else {
+                auth.login(loginData);
+                navigate("../lists");
+            }
+        }
+    }, [loginData])
+    
+    
 
     let loginWords = {
         header: 'Login',

@@ -3,10 +3,12 @@ import ListCard from '../components/ListCard';
 import NavBar from '../components/nav/NavBar';
 import { useLoaderData, useSubmit, } from 'react-router-dom';
 import { nanoid } from 'nanoid'
+import { useAuth } from '../utils/contexts';
 
 export default function Lists() {
     let toDoLists = useLoaderData();
     let submit = useSubmit();
+    const auth = useAuth();
 
     function createNewList() {
         let currentTime = new Date().toISOString();
@@ -28,8 +30,8 @@ export default function Lists() {
 
     return (
         <div>
-            <NavBar loggedIn={true} />
-            <h1>My Lists</h1>
+            <NavBar />
+            <h1>{auth.user.username}&apos;s Lists</h1>
             <button onClick={createNewList}>New List</button>
             {toDoLists.map((list) => {
                 

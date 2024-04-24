@@ -3,25 +3,27 @@ import {  NavLink, useNavigate, } from "react-router-dom";
 import Logo from "../Logo";
 import PropTypes from "prop-types";
 import axios from 'axios';
+import { useAuth } from '../../utils/contexts';
 
-export default function NavBar(props) {
-    let {loggedIn} = props;
+export default function NavBar() {
+    const auth = useAuth();
     let navigate = useNavigate();
 
     async function handleLogout() {
         const response = await axios.post("http://localhost:3000/logout", {logout: "logout"},{withCredentials: true,});
         console.log(response);
+        auth.logout();
         return navigate("/");
     }
     
     return (
         <nav>
-            <NavLink to={loggedIn ? '../lists': '/'}><Logo className='logo' /></NavLink>
-            {!loggedIn && <>
+            <NavLink to={auth.user ? '../lists': '/'}><Logo className='logo' /></NavLink>
+            {!auth.user && <>
                 <NavLink to={'../login'}>Log In</NavLink>
                 <NavLink to={'../register'}>Register</NavLink>
             </>}
-            {loggedIn && <>
+            {auth.user && <>
                 <NavLink to={'../lists'}>My Lists</NavLink>
                 <NavLink to={'../friends'}>Friends</NavLink>
                 <button onClick={handleLogout}>Log out</button>

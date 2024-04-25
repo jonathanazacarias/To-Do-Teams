@@ -1,7 +1,6 @@
 import './navbar.css'
 import {  NavLink, useNavigate, } from "react-router-dom";
 import Logo from "../Logo";
-import PropTypes from "prop-types";
 import axios from 'axios';
 import { useAuth } from '../../utils/contexts';
 
@@ -31,8 +30,4 @@ export default function NavBar() {
             
         </nav>
     )
-}
-
-NavBar.propTypes = {
-    loggedIn: PropTypes.bool.isRequired,
 }

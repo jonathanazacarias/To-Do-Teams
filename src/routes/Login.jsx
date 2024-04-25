@@ -18,7 +18,8 @@ export default function Login() {
     
 
     useEffect(() => {
-        console.log(loginData);
+        console.log("login data: "+loginData);
+        console.log("authed user: "+auth.user);
         if (loginData) {
             
             if (loginData.error) {
@@ -28,7 +29,10 @@ export default function Login() {
                 navigate("../lists");
             }
         }
-    }, [loginData])
+        if (auth.user) {
+            navigate("../lists");
+        }
+    }, [loginData, auth, navigate])
     
     
 

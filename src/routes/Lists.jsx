@@ -18,11 +18,11 @@ export default function Lists() {
             title: "",
             description: "",
             items: [],
-            owner: { userId: "123456", userName: "current user", avatar: "" },
+            owner: auth.user,
             contributers: [],
             created: currentTime,
             modified: currentTime,
-            modifiedBy: { userId: "123456", userName: "current user", avatar: "" },
+            modifiedBy: auth.user,
         }
 
         submit(JSON.stringify(newList), { method: 'post', encType: "application/json" });
@@ -34,7 +34,6 @@ export default function Lists() {
             <h1>{auth.user.username}&apos;s Lists</h1>
             <button onClick={createNewList}>New List</button>
             {toDoLists.map((list) => {
-                
                 return <ListCard toDoList={list} key={list.id} />
             })}
         </div>

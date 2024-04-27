@@ -18,8 +18,8 @@ export default function Login() {
     
 
     useEffect(() => {
-        console.log("login data: "+loginData);
-        console.log("authed user: "+auth.user);
+        // console.log("login data: "+loginData);
+        // console.log("authed user: "+auth.user);
         if (loginData) {
             
             if (loginData.error) {

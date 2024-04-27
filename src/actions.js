@@ -1,9 +1,11 @@
 import { redirect } from "react-router-dom";
 import axios from "axios";
-import { listsList } from "./FAKEBACKEND";
+// import { listsList } from "./FAKEBACKEND";
 
 
 const toDoAPIBaseURL = "http://localhost:3000";
+// create headers that will go with the requests
+const headers = { "Content-Type": "application/json" };
 
 export async function registerAction({ request /*params*/ }) {
   // get the data passed in by the registration form
@@ -46,11 +48,6 @@ export async function loginAction({ request /*params*/ }) {
   const password = formData.get("password");
   const loginUser = JSON.stringify({ username: email, password: password });
 
-  // create headers that will go with the request
-  const headers = { "Content-Type": "application/json" };
-
-  
-
   try {
     
     const response = await axios.post(`${toDoAPIBaseURL}/login`, loginUser, {
@@ -70,13 +67,26 @@ export async function loginAction({ request /*params*/ }) {
 
 export async function newListAction({ request /*params*/ }) {
   const newList = await request.json();
-  listsList.push(newList);
-  return redirect("/home/lists/" + newList.id);
+  console.log(newList);
+  try {
+    const response = await axios.post(`${toDoAPIBaseURL}/lists`, newList, {
+      headers: headers,
+      withCredentials: true,
+    });
+    console.log(response);
+    return redirect("/lists/" + newList.id);
+  } catch (error) {
+    return null;
+  }
+  
 }
 
 export async function updateListAction({ request /*params*/ }) {
   const updatedList = await request.json();
-  let index = listsList.findIndex((list) => list.id === updatedList.id);
-  listsList.splice(index, 1, updatedList);
+  const response = await axios.post(`${toDoAPIBaseURL}/lists/${updatedList.id}`, updatedList, {
+    headers: headers,
+    withCredentials: true,
+  });
+  console.log(response);
   return null;
 }

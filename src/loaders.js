@@ -1,5 +1,5 @@
 import { redirect } from 'react-router-dom';
-import {listsList, friends} from './FAKEBACKEND'
+import { friends} from './FAKEBACKEND'
 import axios from "axios";
 
 const toDoAPIBaseURL = "http://localhost:3000";
@@ -21,8 +21,16 @@ export async function listLoader() {
 }
 
 export async function singleListLoader({params}) {
-  const list = await getSingleList(params.listId)
-  return list;
+  const id =params.listId;
+  try {
+    const data = await axios.get(`${toDoAPIBaseURL}/lists/${id}`, {
+      withCredentials: true,
+    });
+    return data.data;
+  } catch(error) {
+    console.log(error);
+    return null;
+  }
 }
 
 export async function friendsLoader() {
@@ -32,11 +40,6 @@ export async function friendsLoader() {
 export async function singleUserLoader({params}) {
   const friend = await getSingleFriend(params.userId);
   return friend;
-}
-
-function getSingleList(id) {
-  let list = listsList.filter(list => list.id === id);
-  return list[0];
 }
 
 function getSingleFriend(id) {

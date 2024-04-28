@@ -83,7 +83,8 @@ export async function newListAction({ request /*params*/ }) {
 
 export async function updateListAction({ request /*params*/ }) {
   const updatedList = await request.json();
-  const response = await axios.post(`${toDoAPIBaseURL}/lists/${updatedList.id}`, updatedList, {
+  console.log(updatedList);
+  const response = await axios.put(`${toDoAPIBaseURL}/list/${updatedList.id}`, updatedList, {
     headers: headers,
     withCredentials: true,
   });

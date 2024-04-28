@@ -14,6 +14,7 @@ export default function List(props) {
     function updateServer(updateContent) {
         let newTitle = listTitle;
         let newItems = toDoItems;
+        let newDescription = listDescription;
         let currentTime = new Date().toISOString;
 
         // check what content in the list is being updated
@@ -26,6 +27,11 @@ export default function List(props) {
             newTitle = updateContent.newListTitle;
         }
 
+        // if the updated content is a new list description
+        if(updateContent.newListDescription) {
+            newDescription = updateContent.newListDescription;
+        }
+
         // if the updated content is a new list item
         if(updateContent.newListItem) {
             newItems = [...newItems, updateContent.newListItem];
@@ -35,7 +41,7 @@ export default function List(props) {
         let updatedList = {
             id: id,
             title: newTitle,
-            description: description,
+            description: newDescription,
             items: newItems,
             owner: owner,
             contributers: contributers,
@@ -54,8 +60,13 @@ export default function List(props) {
         updateServer({newListTitle: inputTitle});
     }
 
-    const [toDoItems, setToDoItems] = useState(items);
+    const [listDescription, setListDescription] = useState(description);
+    function changeDescription(inputDescription) {
+        setListDescription(inputDescription);
+        updateServer({newListDescription: inputDescription});
+    }
 
+    const [toDoItems, setToDoItems] = useState(items);
     function addItem(inputText) {
         setToDoItems(prevItems => {
             let newId = nanoid();
@@ -106,6 +117,7 @@ export default function List(props) {
         <div className="container">
             <div className="heading">
                 <InputDisplay inputType='input' initialValue={listTitle} placeHolder='List Title' saveMethod={changeTitle}/>
+                <InputDisplay inputType='textArea' initialValue={listDescription} placeHolder='List Description' saveMethod={changeDescription} />
             </div>
             <InputArea addItem={addItem} />
             <div>

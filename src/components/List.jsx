@@ -119,7 +119,7 @@ export default function List(props) {
                 <InputDisplay inputType='input' initialValue={listTitle} placeHolder='List Title' saveMethod={changeTitle}/>
                 <InputDisplay inputType='textArea' initialValue={listDescription} placeHolder='List Description' saveMethod={changeDescription} />
             </div>
-            <InputArea addItem={addItem} />
+            
             <div>
                 <ul>
                     {toDoItems.map((mappedTodoItem) => (
@@ -134,6 +134,7 @@ export default function List(props) {
                     ))}
                 </ul>
             </div>
+            <InputArea addItem={addItem} />
         </div>
     );
 }

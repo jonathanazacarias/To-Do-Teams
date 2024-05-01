@@ -31,13 +31,12 @@ export async function registerAction({ request /*params*/ }) {
         withCredentials: true,
       });
       const res = response.data;
-      console.log(res);
-      return true;
+      return res;
     } catch (error) {
-      console.log(`error:` + error);
+      return { error: error };
     }
   } else {
-    return true;
+    return { error: "Passwords do not match." };
   }
 }
 

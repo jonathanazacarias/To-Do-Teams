@@ -31,6 +31,7 @@ export async function registerAction({ request /*params*/ }) {
         withCredentials: true,
       });
       const res = response.data;
+      
       return res;
     } catch (error) {
       return { error: error };

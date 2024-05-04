@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Form, Link, useActionData, useNavigate} from 'react-router-dom'
 import NavBar from '../components/nav/NavBar';
 import { useAuth } from '../utils/contexts';
+// import Cookies from 'js-cookie';
 
 
 export default function Register() {
@@ -19,7 +20,6 @@ export default function Register() {
             if (registrationResult.error) {
                 console.log(registrationResult.error.response.data);
             } else {
-                console.log(registrationResult);
                 auth.login(registrationResult);
                 navigate("../lists");
             }

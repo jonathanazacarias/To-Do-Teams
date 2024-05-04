@@ -1,21 +1,23 @@
-import { useState, } from "react";
+import { useEffect, useState, } from "react";
 import { PropTypes } from "prop-types";
 import { AuthContext } from "./contexts";
 import { Outlet } from "react-router-dom";
-import Cookie from 'js-cookie';
 import Cookies from "js-cookie";
 
 
 export function AuthProvider() {
     const [user, setUser] = useState(null);
     
-    if(Cookies.get("user")) {
-        // setUser(Cookies.get("user"));
-        console.log(Cookies.get("user"));
-    }
+    useEffect(() => {
+        if (Cookies.get("user")) {
+            const user = JSON.parse(Cookies.get("user"));
+            setUser(user); 
+        }
+    },[]);
+    
 
     function login(user) {
-        Cookie.set("user", user, {expires: 1});
+        Cookies.set("user", JSON.stringify(user), {expires: 1});
         setUser(user);
     }
 

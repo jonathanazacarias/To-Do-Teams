@@ -9,8 +9,7 @@ export default function NavBar() {
     let navigate = useNavigate();
 
     async function handleLogout() {
-        const response = await axios.post("http://localhost:3000/logout", {logout: "logout"},{withCredentials: true,});
-        console.log(response);
+        await axios.post("http://localhost:3000/logout", {logout: "logout"},{withCredentials: true,});
         auth.logout();
         return navigate("/");
     }

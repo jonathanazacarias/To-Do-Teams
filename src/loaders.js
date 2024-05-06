@@ -21,7 +21,7 @@ export async function listLoader() {
 }
 
 export async function singleListLoader({params}) {
-  const id =params.listId;
+  const id = params.listId;
   try {
     const data = await axios.get(`${toDoAPIBaseURL}/lists/${id}`, {
       withCredentials: true,

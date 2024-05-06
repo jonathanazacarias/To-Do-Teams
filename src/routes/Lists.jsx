@@ -15,11 +15,11 @@ export default function Lists() {
         let newId = nanoid();
         let newList = {
             id: newId,
-            title: "",
-            description: "",
-            items: [],
+            title: "NEW LIST",
+            description: auth.user.username+"'s new list.",
+            items: null,
             owner: auth.user,
-            contributers: [],
+            contributers: null,
             created: currentTime,
             modified: currentTime,
             modifiedBy: auth.user,

@@ -69,11 +69,11 @@ export async function newListAction({ request /*params*/ }) {
   const newList = await request.json();
   console.log(newList);
   try {
-    const response = await axios.post(`${toDoAPIBaseURL}/lists`, newList, {
+    await axios.post(`${toDoAPIBaseURL}/lists`, newList, {
       headers: headers,
       withCredentials: true,
     });
-    console.log(response);
+    
     return redirect("/lists/" + newList.id);
   } catch (error) {
     return null;
@@ -83,8 +83,8 @@ export async function newListAction({ request /*params*/ }) {
 
 export async function updateListAction({ request /*params*/ }) {
   const updatedList = await request.json();
-  console.log(updatedList);
-  const response = await axios.put(`${toDoAPIBaseURL}/list/${updatedList.id}`, updatedList, {
+
+  const response = await axios.put(`${toDoAPIBaseURL}/lists`, updatedList, {
     headers: headers,
     withCredentials: true,
   });

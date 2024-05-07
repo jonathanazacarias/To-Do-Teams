@@ -28,13 +28,17 @@ export default function Lists() {
         submit(JSON.stringify(newList), { method: 'post', encType: "application/json" });
     }
 
+    function deleteList(listId) {
+        submit(JSON.stringify({id: listId}), { method: 'delete', encType: "application/json" });
+    }
+
     return (
         <div>
             <NavBar />
             <h1>{auth.user.username}&apos;s Lists</h1>
             <button onClick={createNewList}>New List</button>
             {toDoLists.map((list) => {
-                return <ListCard toDoList={list} key={list.id} />
+                return <ListCard toDoList={list} key={list.id} deleteFunction={deleteList}/>
             })}
         </div>
     );

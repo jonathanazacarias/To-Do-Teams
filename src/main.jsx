@@ -5,7 +5,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import ErrorPage from './error-page'
 import Login from './routes/Login'
 import { friendsLoader, listLoader, singleListLoader, singleUserLoader } from './loaders'
-import { loginAction, newListAction, updateListAction, registerAction } from './actions'
+import { loginAction, listControlActions, updateListAction, registerAction, } from './actions'
 import Home from './routes/Home'
 import Lists from './routes/Lists'
 import Friends from './routes/Friends'
@@ -45,7 +45,7 @@ const router = createBrowserRouter([
             path: 'lists',
             element: <Lists />,
             loader: listLoader,
-            action: newListAction,
+            action: listControlActions,
           },
           {
             path: 'friends',

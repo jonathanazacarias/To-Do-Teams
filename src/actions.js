@@ -65,19 +65,32 @@ export async function loginAction({ request /*params*/ }) {
   }
 }
 
-export async function newListAction({ request /*params*/ }) {
-  const newList = await request.json();
-  console.log(newList);
-  try {
-    await axios.post(`${toDoAPIBaseURL}/lists`, newList, {
-      headers: headers,
-      withCredentials: true,
-    });
+export async function listControlActions({ request /*params*/ }) {
+  if(request.method === "POST") {
+    const newList = await request.json();
+    try {
+      await axios.post(`${toDoAPIBaseURL}/lists`, newList, {
+        headers: headers,
+        withCredentials: true,
+      });
+      return redirect("/lists/" + newList.id);
+    } catch (error) {
+      return null;
+    }
+  } else {
+    const listIdJSON = await request.json(`${toDoAPIBaseURL}/lists`);
     
-    return redirect("/lists/" + newList.id);
-  } catch (error) {
-    return null;
+    try {
+      await axios.delete(`${toDoAPIBaseURL}/lists/${listIdJSON.id}`, {
+        headers: headers,
+        withCredentials: true,
+      });
+      return null;
+    } catch (error) {
+      return error;
+    }
   }
+  
   
 }
 

@@ -95,12 +95,32 @@ export async function listControlActions({ request /*params*/ }) {
 }
 
 export async function updateListAction({ request /*params*/ }) {
-  const updatedList = await request.json();
+  if(request.method === "POST") {
+    try {
+      const updatedList = await request.json();
 
-  const response = await axios.put(`${toDoAPIBaseURL}/lists`, updatedList, {
-    headers: headers,
-    withCredentials: true,
-  });
-  console.log(response);
-  return null;
+      const result = await axios.put(`${toDoAPIBaseURL}/lists`, updatedList, {
+        headers: headers,
+        withCredentials: true,
+      });
+
+      return {success: result.data};
+    } catch (error) {
+      return {error: error};
+    }
+    
+  }else {
+    try {
+      const item = await request.json();
+      const deleted = await axios.delete(`${toDoAPIBaseURL}/lists/${item.listId}/${item.itemId}`, {
+        headers: headers,
+        withCredentials: true,
+      });
+      const deletedId = deleted.data;
+      return {success: deletedId};
+    } catch (error) {
+      return {error: error};
+    }
+  }
+  
 }

@@ -25,11 +25,11 @@ export default function Lists() {
             modifiedBy: auth.user,
         }
 
-        submit(JSON.stringify(newList), { method: 'post', encType: "application/json" });
+        submit(JSON.stringify(newList), { method: 'POST', encType: "application/json" });
     }
 
     function deleteList(listId) {
-        submit(JSON.stringify({id: listId}), { method: 'delete', encType: "application/json" });
+        submit(JSON.stringify({id: listId}), { method: 'DELETE', encType: "application/json" });
     }
 
     return (

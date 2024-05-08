@@ -3,17 +3,26 @@ import ToDoItem from './ToDoItem'
 import InputArea from './InputArea'
 import { PropTypes } from 'prop-types'
 import InputDisplay from './InputDisplay'
-import { useSubmit } from 'react-router-dom'
+import { useActionData, useSubmit } from 'react-router-dom'
 import { nanoid } from 'nanoid'
 import { useAuth } from '../utils/contexts'
 
 export default function List(props) {
-
+    const actionData = useActionData();
     const auth = useAuth();
+    const submit = useSubmit();
 
     const { id, list_owner_id: listOwnerId, title, description, created_date: created, items } = props.toDoList;
 
-    const submit = useSubmit();
+    
+    const [toDoItems, setToDoItems] = useState(items);
+    const [listTitle, setListTitle] = useState(title);
+    const [listDescription, setListDescription] = useState(description);
+
+    if(actionData) {
+        console.log(actionData);
+    }
+
     function updateServer(updateContent) {
         let newTitle = listTitle;
         let newItems = toDoItems;
@@ -53,22 +62,22 @@ export default function List(props) {
             modifiedBy: auth.user.id,
         };
 
-        submit(JSON.stringify(updatedList), { method: 'post', encType: "application/json" });
+        submit(JSON.stringify(updatedList), { method: 'POST', encType: "application/json" });
     }
 
-    const [listTitle, setListTitle] = useState(title);
+    
     function changeTitle(inputTitle) {
         setListTitle(inputTitle);
         updateServer({ newListTitle: inputTitle });
     }
 
-    const [listDescription, setListDescription] = useState(description);
+    
     function changeDescription(inputDescription) {
         setListDescription(inputDescription);
         updateServer({ newListDescription: inputDescription });
     }
 
-    const [toDoItems, setToDoItems] = useState(items);
+    
     function addItem(inputText) {
         setToDoItems(prevItems => {
             let newId = nanoid();
@@ -85,16 +94,16 @@ export default function List(props) {
 
         setToDoItems(prevItems => {
             // find the list item to update
-            let updateItemIndex = prevItems.findIndex(item => item.id === itemId);
+            const updateItemIndex = prevItems.findIndex(item => item.id === itemId);
 
             // get the list items that are before the list item that is being updated
-            let beginningOfList = prevItems.slice(0, updateItemIndex);
+            const beginningOfList = prevItems.slice(0, updateItemIndex);
 
             // get the list items that are after the list item that is being updated
-            let endOfList = prevItems.slice(updateItemIndex + 1);
+            const endOfList = prevItems.slice(updateItemIndex + 1);
 
             // insert the items at front, new list, and items at back to a new list of items
-            let newList = [...beginningOfList, item, ...endOfList];
+            const newList = [...beginningOfList, item, ...endOfList];
 
             updateServer({ newItemList: newList })
 
@@ -102,13 +111,23 @@ export default function List(props) {
         });
     }
 
-    function deleteItem(id) {
-        setToDoItems(prevItems => {
-            return prevItems.filter((item) => {
-                return item.id !== id;
-            });
+    function deleteItem(itemId) {
+        setToDoItems( prevItems => {
+            // find the list item to delete
+            const deleteItemIndex = prevItems.findIndex(item => item.id === itemId);
+
+            // get the list items that are before the list item that is being updated
+            const beginningOfList = prevItems.slice(0, deleteItemIndex);
+
+            // get the list items that are after the list item that is being updated
+            const endOfList = prevItems.slice(deleteItemIndex + 1);
+
+            // create a new list that does not have the deleted item in it
+            const newList = [...beginningOfList, ...endOfList];
+            
+            return newList;
         });
-        // also need to do db save here
+        submit(JSON.stringify({listId: id, itemId: itemId}), { method: 'DELETE', encType: "application/json" });
     }
 
     return (
@@ -127,8 +146,8 @@ export default function List(props) {
                             listId={mappedTodoItem.listId}
                             title={mappedTodoItem.title}
                             description={mappedTodoItem.description}
-                            onChecked={deleteItem}
                             updateItem={updateItem}
+                            deleteItem={deleteItem}
                         />
                     ))}
                 </ul>

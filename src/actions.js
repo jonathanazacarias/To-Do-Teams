@@ -123,4 +123,22 @@ export async function updateListAction({ request /*params*/ }) {
     }
   }
   
+  
+}
+
+export async function friendActions({ request }) {
+  const requestData = await request.json();
+
+  try {
+    const result = await axios.post(`${toDoAPIBaseURL}/friends`, requestData, {
+      headers: headers,
+      withCredentials: true,
+    });
+    const message = {success: result.data};
+    console.log(message);
+    return null;
+  } catch (error) {
+    console.log({error: error});
+    return null;
+  }
 }

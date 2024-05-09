@@ -6,8 +6,8 @@ import { nanoid } from 'nanoid'
 import { useAuth } from '../utils/contexts';
 
 export default function Lists() {
-    let toDoLists = useLoaderData();
-    let submit = useSubmit();
+    const toDoLists = useLoaderData();
+    const submit = useSubmit();
     const auth = useAuth();
 
     function createNewList() {

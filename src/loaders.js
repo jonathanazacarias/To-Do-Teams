@@ -38,6 +38,8 @@ export async function friendsLoader() {
     const result = await axios.get(`${toDoAPIBaseURL}/friends`, {
       withCredentials: true,
     });
+
+    console.log(result.data);
     
     return result.data;
   } catch (error) {

@@ -128,17 +128,61 @@ export async function updateListAction({ request /*params*/ }) {
 
 export async function friendActions({ request }) {
   const requestData = await request.json();
+  const requestAction = requestData.action;
+  
 
-  try {
-    const result = await axios.post(`${toDoAPIBaseURL}/friends`, requestData, {
-      headers: headers,
-      withCredentials: true,
-    });
-    const message = {success: result.data};
-    console.log(message);
-    return null;
-  } catch (error) {
-    console.log({error: error});
-    return null;
+  if(requestAction === "cancel" || requestAction === "deny") {
+    const requestId = requestData.requestId;
+    try {
+      const result = await axios.delete(`${toDoAPIBaseURL}/friends/${requestId}`, {
+        withCredentials: true,
+      });
+      return { success: result.data };
+    } catch (error) {
+      return { error: error };
+    }
+  } else if(requestAction === "approve") {
+    const requestId = requestData.requestId;
+    try {
+      const result = await axios.patch(`${toDoAPIBaseURL}/friends/approve/${requestId}`, {
+        withCredentials: true,
+      });
+      return { success: {approved: result.data} };
+    } catch (error) {
+      return {error: error};
+    }
+  } else if(requestAction === "search") {
+    
+    try {
+      const searchInput = requestData.searchInput;
+      const result = await axios.get(`${toDoAPIBaseURL}/friends/search/${searchInput}`,
+        {
+          withCredentials: true,
+        }
+      );
+      const suggestionList = result.data;
+      return { success: {list: suggestionList} };
+    } catch (error) {
+      return {error: error};
+    }
+    
+  } else if(requestAction === "request") {
+    const userId = requestData.userId;
+    const requestId = requestData.id;
+    try {
+      const result = await axios.post(`${toDoAPIBaseURL}/friends/request`, { id: requestId, userId: userId },
+        {
+          headers: headers,
+          withCredentials: true,
+        }
+      );
+
+      return { success: {friendRequest: result.data} };
+    } catch (error) {
+      return {error: error};
+    }
+  } else {
+    return {error: "action not found"};
   }
+  
 }

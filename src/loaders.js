@@ -34,7 +34,17 @@ export async function singleListLoader({params}) {
 }
 
 export async function friendsLoader() {
-  return await friends;
+  try {
+    const result = await axios.get(`${toDoAPIBaseURL}/friends`, {
+      withCredentials: true,
+    });
+
+    console.log(result.data);
+    
+    return result.data;
+  } catch (error) {
+    return redirect("/login");
+  }
 }
 
 export async function singleUserLoader({params}) {
